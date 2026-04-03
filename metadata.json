@@ -1,0 +1,5 @@
+{
+  "name": "Jay Store",
+  "description": "A full-stack Google Play Store clone named Jay Store with User and Admin panels, app management, reviews, and categories.",
+  "requestFramePermissions": ["camera", "microphone", "geolocation"]
+}

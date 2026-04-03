@@ -1,0 +1,100 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the Play Store clone.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "The user's unique ID from Firebase Auth." },
+        "name": { "type": "string", "description": "The user's display name." },
+        "email": { "type": "string", "format": "email", "description": "The user's email address." },
+        "photoURL": { "type": "string", "description": "The user's profile picture URL." },
+        "role": { "type": "string", "enum": ["user", "admin"], "description": "The user's role in the system." },
+        "isBanned": { "type": "boolean", "description": "Whether the user is banned from the platform." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the user account was created." }
+      },
+      "required": ["uid", "name", "email", "role"]
+    },
+    "App": {
+      "title": "App",
+      "description": "An application listed in the store.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "The name of the app." },
+        "description": { "type": "string", "description": "A detailed description of the app." },
+        "category": { "type": "string", "description": "The category ID the app belongs to." },
+        "icon": { "type": "string", "description": "URL to the app's icon." },
+        "screenshots": { "type": "array", "items": { "type": "string" }, "description": "URLs to app screenshots." },
+        "apk_file": { "type": "string", "description": "URL to the APK file." },
+        "rating": { "type": "number", "description": "Average rating of the app." },
+        "downloads": { "type": "integer", "description": "Total number of downloads." },
+        "developer": { "type": "string", "description": "Name of the developer or company." },
+        "version": { "type": "string", "description": "Current version of the app." },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"], "description": "The current status of the app listing." },
+        "authorId": { "type": "string", "description": "The ID of the user who uploaded the app." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the app was added." }
+      },
+      "required": ["name", "description", "category", "icon", "developer", "status", "authorId"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "A category for apps.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "The name of the category (e.g., Games, Education)." },
+        "slug": { "type": "string", "description": "URL-friendly version of the name." }
+      },
+      "required": ["name", "slug"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "A review for an app.",
+      "type": "object",
+      "properties": {
+        "appId": { "type": "string", "description": "The ID of the app being reviewed." },
+        "userId": { "type": "string", "description": "The ID of the user who wrote the review." },
+        "userName": { "type": "string", "description": "The name of the user who wrote the review." },
+        "userPhoto": { "type": "string", "description": "The photo URL of the user who wrote the review." },
+        "rating": { "type": "number", "description": "Rating given (1-5 stars)." },
+        "comment": { "type": "string", "description": "The review text." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the review was written." }
+      },
+      "required": ["appId", "userId", "rating", "comment"]
+    },
+    "SupportTicket": {
+      "title": "Support Ticket",
+      "description": "A support request from a user.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The ID of the user who created the ticket." },
+        "userName": { "type": "string", "description": "The name of the user who created the ticket." },
+        "userEmail": { "type": "string", "description": "The email of the user who created the ticket." },
+        "subject": { "type": "string", "description": "The subject of the support request." },
+        "status": { "type": "string", "enum": ["open", "closed"], "description": "The current status of the ticket." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the ticket was created." },
+        "lastMessageAt": { "type": "string", "format": "date-time", "description": "When the last message was sent." }
+      },
+      "required": ["userId", "userName", "userEmail", "subject", "status"]
+    },
+    "SupportMessage": {
+      "title": "Support Message",
+      "description": "A message within a support ticket.",
+      "type": "object",
+      "properties": {
+        "senderId": { "type": "string", "description": "The ID of the sender (user or admin)." },
+        "senderName": { "type": "string", "description": "The name of the sender." },
+        "text": { "type": "string", "description": "The message text." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the message was sent." }
+      },
+      "required": ["senderId", "senderName", "text"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": { "schema": "User", "description": "User profiles." },
+    "/apps/{appId}": { "schema": "App", "description": "App listings." },
+    "/categories/{categoryId}": { "schema": "Category", "description": "App categories." },
+    "/apps/{appId}/reviews/{reviewId}": { "schema": "Review", "description": "Reviews for a specific app." },
+    "/support_tickets/{ticketId}": { "schema": "SupportTicket", "description": "Support tickets." },
+    "/support_tickets/{ticketId}/messages/{messageId}": { "schema": "SupportMessage", "description": "Messages within a support ticket." }
+  }
+}
